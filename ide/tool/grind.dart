@@ -232,12 +232,12 @@ void _polymerDeploy(GrinderContext context, Directory sourceDir, Directory destD
   copyFile(new File('pubspec.lock'), sourceDir);
   copyDirectory(new Directory('app'), joinDir(sourceDir, ['web']), context);
   deleteEntity(getDir('${sourceDir.path}/web/packages'), context);
-  Link link = new Link(sourceDir.path + '/packages');
-  link.createSync('../../packages');
+  Link link = new Link(sourceDir.path + '/web/packages');
+  link.createSync('../../../packages');
 
-  runDartScript(context, 'packages/polymer/deploy.dart',
+  runDartScript(context, 'web/packages/polymer/deploy.dart',
       arguments: ['--out', '../../${destDir.path}'],
-      packageRoot: 'packages',
+      packageRoot: 'web/packages',
       workingDirectory: sourceDir.path);
 }
 

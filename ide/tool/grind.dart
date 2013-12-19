@@ -254,7 +254,11 @@ void _dart2jsCompile(GrinderContext context, Directory target, String filePath,
      '--suppress-hints',
      '--out=' + joinDir(target, ['${filePath}.js']).path]);
   if (Platform.isWindows) {
-    context.log('WARNING! Build on windows won\'t apply the patch for dart2js.');
+    runProcess(
+        context,
+        'git',
+        arguments: ['apply', '../tool/fix-restore-entry.patch'],
+        workingDirectory: target.path);
   } else {
     // patch spark.dart.precompile.js tool/fix-restore-entry.patch
     runProcess(

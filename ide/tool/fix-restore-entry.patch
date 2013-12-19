@@ -1,3 +1,4 @@
+﻿diff --git a/ide/app/spark.dart.precompiled.js b/ide/app/spark.dart.precompiled.js
 --- a/ide/app/spark.dart.precompiled.js
 +++ b/ide/app/spark.dart.precompiled.js
 @@ -31736,7 +31736,7 @@ _wrapToDart: function(o) {

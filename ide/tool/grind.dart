@@ -253,8 +253,12 @@ void _dart2jsCompile(GrinderContext context, Directory target, String filePath,
      '--suppress-warnings',
      '--suppress-hints',
      '--out=' + joinDir(target, ['${filePath}.js']).path]);
+
+  // TODO(sungguk): Remove this code, applying a patch. after Dart2js generates
+  //                chrome.restoryEntory() correctly.
+  //                See https://github.com/dart-lang/spark/issues/382
   if (Platform.isWindows) {
-    context.log('WARNING! Build on windows won\'t apply the patch for dart2js.');
+    _runCommandSync(context, 'git apply .\\tool\\fix-restore-entry.patch');
   } else {
     // patch spark.dart.precompile.js tool/fix-restore-entry.patch
     runProcess(
@@ -470,8 +474,14 @@ void _delete(String path, [GrinderContext context]) {
 void _runCommandSync(GrinderContext context, String command, {String cwd}) {
   context.log(command);
 
-  var result = Process.runSync(
-      '/bin/sh', ['-c', command], workingDirectory: cwd);
+  ProcessResult result;
+  if (Platform.isWindows) {
+    result =
+        Process.runSync('cmd.exe', ['/c', command], workingDirectory: cwd);
+  } else {
+    result = Process.runSync(
+        '/bin/sh', ['-c', command], workingDirectory: cwd);
+  }
 
   if (result.stdout.isNotEmpty) {
     context.log(result.stdout);

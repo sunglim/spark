@@ -257,7 +257,7 @@ void _dart2jsCompile(GrinderContext context, Directory target, String filePath,
     runProcess(
         context,
         'git',
-        arguments: ['apply', '../tool/fix-restore-entry.patch'],
+        arguments: ['apply', '..\\tool\\fix-restore-entry.patch'],
         workingDirectory: target.path);
   } else {
     // patch spark.dart.precompile.js tool/fix-restore-entry.patch

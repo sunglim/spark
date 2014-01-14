@@ -21,4 +21,9 @@ class Widget extends PolymerElement {
 
   Element getShadowDomElement(String selectors) =>
       shadowRoot.querySelector(selectors);
+
+  // no necessary to use widget, use htmlelement
+  bool pointInWidget(Widget widget, Point xyGlobal) {
+    return widget.offset.containsPoint(xyGlobal);
+  }
 }

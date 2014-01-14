@@ -5,7 +5,7 @@
 library spark_widgets.menu_button;
 
 import 'package:polymer/polymer.dart';
-
+import 'dart:html';
 import '../common/widget.dart';
 import '../spark_menu/spark_menu.dart';
 
@@ -21,7 +21,12 @@ class SparkMenuButton extends Widget {
   @published String valign = "center";
   @published String selectedClass = "";
 
-  SparkMenuButton.created(): super.created();
+  SparkMenuButton.created(): super.created() {
+    _captureHandler = captureHandler;
+    document.addEventListener('mousedown', _captureHandler, true);
+  }
+
+  EventListener _captureHandler;
 
   //* Toggle the opened state of the dropdown.
   void toggle() {
@@ -30,6 +35,19 @@ class SparkMenuButton extends Widget {
     opened = !opened;
   }
 
+  // TODO(sorvell): This approach will not work with modal. For this we need a
+  // scrim.
+  void captureHandler(MouseEvent e) {
+    // TODO(terry): Hack to work around lightdom or event.path not yet working.
+    var element = ($['button']);
+    if (element != null && !pointInWidget(element, e.client)) {
+      // TODO(terry): How to cancel the event e.cancelable = true;
+      e.stopImmediatePropagation();
+      e.preventDefault();
+
+      opened = false;
+    }
+  }
   //* Returns the selected item.
   String get selection {
     var menu = $['overlayMenu'];

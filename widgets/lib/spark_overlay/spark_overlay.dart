@@ -216,17 +216,13 @@ class SparkOverlay extends Widget {
   // scrim.
   void captureHandler(MouseEvent e) {
     // TODO(terry): Hack to work around lightdom or event.path not yet working.
-    if (!autoCloseDisabled && !pointInOverlay(this, e.client)) {
+    if (!autoCloseDisabled && !pointInWidget(this, e.client)) {
       // TODO(terry): How to cancel the event e.cancelable = true;
       e.stopImmediatePropagation();
       e.preventDefault();
 
       autoCloseTask = new Timer(Duration.ZERO, () { opened = false; });
     }
-  }
-
-  bool pointInOverlay(SparkOverlay overlay, Point xyGlobal) {
-    return overlay.offset.containsPoint(xyGlobal);
   }
 
   void keydownHandler(KeyboardEvent e) {

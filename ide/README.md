@@ -9,13 +9,13 @@ Dart IDE needs to be installed and `dart/dart-sdk/bin` needs to be accessible
 from `$PATH`. In addition, you should set a `DART_SDK` environment variable
 and point it to `your/path/to/dart-sdk`.
 
-You **need** to enable experimental Web Platform features in Chrome. From 
+You **need** to enable experimental Web Platform features in Chrome. From
 `chrome://flags`, enable `#enable-experimental-web-platform-features`.
 
 ### Entry Point
 The main entry point to the Chrome App is `app/manifest.json`. It defines
 the background script for the application (`app/background.js`). This script
-gets invoked when the application starts. It opens a new window with the 
+gets invoked when the application starts. It opens a new window with the
 contents set to the `app/spark_polymer.html` file. This file in turn runs
 `app/spark_polymer.dart`.
 
@@ -35,7 +35,7 @@ Run:
 
     ./grind setup
 
-to copy library code from packages/ to app/packages/. This step also copies the 
+to copy library code from packages/ to app/packages/. This step also copies the
 `dart:` code from the Dart SDK into the `app/sdk` directory.
 
 ### Lib

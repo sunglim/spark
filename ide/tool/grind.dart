@@ -100,6 +100,9 @@ void deploy(GrinderContext context) {
   // Compile the main Spark app.
   _dart2jsCompile(context, deployWeb,
       'spark_polymer.html_bootstrap.dart', true);
+  _copyFileWithNewName(
+        joinFile(deployWeb, ['spark_polymer.html_bootstrap.dart.precompiled.js']),
+        deployWeb, 'spark_polymer.html_bootstrap.dart.js', context);
 
   // Compile the services entry-point.
   _dart2jsCompile(context, deployWeb, 'services_impl.dart', true);
@@ -386,12 +389,12 @@ void _dart2jsCompile(GrinderContext context, Directory target, String filePath,
 /*
   final Link link = new Link(joinFile(target, ['${filePath}.js']).path);
   link.createSync('./${filePath}.precompiled.js');
-*/
+
 
   //new File(joinFile(target, ['${filePath}.precompiled.js']).path).renameSync('${filePath}.js');
   new File(joinFile(target, ['${filePath}.precompiled.js']).path).copySync('${filePath}.js');
   //joinFile(target, ['${filePath}.js']).renameSync('./${filePath}.precompiled.js');
-
+*/
   _printSize(context, joinFile(target, ['${filePath}.precompiled.js']));
 }
 

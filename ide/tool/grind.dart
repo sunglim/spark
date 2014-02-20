@@ -61,7 +61,7 @@ void main([List<String> args]) {
  * Init needed dependencies.
  */
 void setup(GrinderContext context) {
-  // check to make sure we can locate the SDK
+  // Check to make sure we can locate the SDK.
   if (sdkDir == null) {
     context.fail("Unable to locate the Dart SDK\n"
         "Please set the DART_SDK environment variable to the SDK path.\n"
@@ -71,7 +71,7 @@ void setup(GrinderContext context) {
   PubTools pub = new PubTools();
   pub.get(context);
 
-  // copy from ./packages to ./app/packages
+  // Copy from ./packages to ./app/packages
   copyDirectory(getDir('packages'), getDir('app/packages'), context);
 
   BUILD_DIR.createSync();
@@ -100,21 +100,18 @@ void deploy(GrinderContext context) {
   // Compile the main Spark app.
   _dart2jsCompile(context, deployWeb,
       'spark_polymer.html_bootstrap.dart', true);
-  _copyFileWithNewName(
-        joinFile(deployWeb, ['spark_polymer.html_bootstrap.dart.precompiled.js']),
-        deployWeb, 'spark_polymer.html_bootstrap.dart.js', context);
 
   // Compile the services entry-point.
   _dart2jsCompile(context, deployWeb, 'services_impl.dart', true);
-  _copyFileWithNewName(
-      joinFile(deployWeb, ['services_impl.dart.precompiled.js']),
-      deployWeb, 'services_impl.dart.js', context);
 
-/*
-  _runCommandSync(
-      context,
-      'patch ${destDir.path}/web/packages/shadow_dom/shadow_dom.debug.js tool/shadow_dom.patch');
-*/
+  if (Platform.isWindows) {
+    context.log(
+        'TODO: manually patch ${destDir.path}/web/packages/shadow_dom/shadow_dom.debug.js tool/shadow_dom.patch');
+  } else {
+    _runCommandSync(
+        context,
+        'patch ${destDir.path}/web/packages/shadow_dom/shadow_dom.debug.js tool/shadow_dom.patch');
+  }
 }
 
 // Creates a release build to be uploaded to Chrome Web Store.
@@ -371,13 +368,13 @@ void _dart2jsCompile(GrinderContext context, Directory target, String filePath,
       }
   );
 
-  // clean up unnecessary (and large) files
+  // Clean up unnecessary (and large) files.
   deleteEntity(joinFile(target, ['${filePath}.js']), context);
   deleteEntity(joinFile(target, ['${filePath}.js.deps']), context);
   deleteEntity(joinFile(target, ['${filePath}.js.map']), context);
 
   if (removeSymlinks) {
-    // de-symlink the directory
+    // De-symlink the directory.
     _removePackagesLinks(context, target);
 
     copyDirectory(
@@ -386,16 +383,11 @@ void _dart2jsCompile(GrinderContext context, Directory target, String filePath,
         context);
   }
 
-/*
-  final Link link = new Link(joinFile(target, ['${filePath}.js']).path);
-  link.createSync('./${filePath}.precompiled.js');
+  _copyFileWithNewName(
+        joinFile(target, ['${filePath}.precompiled.js']),
+        target, '${filePath}.js', context);
 
-
-  //new File(joinFile(target, ['${filePath}.precompiled.js']).path).renameSync('${filePath}.js');
-  new File(joinFile(target, ['${filePath}.precompiled.js']).path).copySync('${filePath}.js');
-  //joinFile(target, ['${filePath}.js']).renameSync('./${filePath}.precompiled.js');
-*/
-  _printSize(context, joinFile(target, ['${filePath}.precompiled.js']));
+  _printSize(context, joinFile(target, ['${filePath}.js']));
 }
 
 void _changeMode({bool useTestMode: true}) {

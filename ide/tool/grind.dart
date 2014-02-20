@@ -107,9 +107,11 @@ void deploy(GrinderContext context) {
       joinFile(deployWeb, ['services_impl.dart.precompiled.js']),
       deployWeb, 'services_impl.dart.js', context);
 
+/*
   _runCommandSync(
       context,
       'patch ${destDir.path}/web/packages/shadow_dom/shadow_dom.debug.js tool/shadow_dom.patch');
+*/
 }
 
 // Creates a release build to be uploaded to Chrome Web Store.
@@ -381,8 +383,12 @@ void _dart2jsCompile(GrinderContext context, Directory target, String filePath,
         context);
   }
 
+/*
   final Link link = new Link(joinFile(target, ['${filePath}.js']).path);
   link.createSync('./${filePath}.precompiled.js');
+*/
+
+  joinFile(target, ['${filePath}.js']).renameSync('./${filePath}.precompiled.js');
 
   _printSize(context, joinFile(target, ['${filePath}.precompiled.js']));
 }

@@ -388,7 +388,8 @@ void _dart2jsCompile(GrinderContext context, Directory target, String filePath,
   link.createSync('./${filePath}.precompiled.js');
 */
 
-  joinFile(target, ['${filePath}.js']).renameSync('./${filePath}.precompiled.js');
+  new File('./${filePath}.precompiled.js').renameSync('${filePath}.js');
+  //joinFile(target, ['${filePath}.js']).renameSync('./${filePath}.precompiled.js');
 
   _printSize(context, joinFile(target, ['${filePath}.precompiled.js']));
 }

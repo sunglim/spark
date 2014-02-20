@@ -383,9 +383,8 @@ void _dart2jsCompile(GrinderContext context, Directory target, String filePath,
         context);
   }
 
-  _copyFileWithNewName(
-        joinFile(target, ['${filePath}.precompiled.js']),
-        target, '${filePath}.js', context);
+  _rename(joinFile(target, ['${filePath}.precompiled.js']).path,
+          joinFile(target, ['${filePath}.js']).path, context);
 
   _printSize(context, joinFile(target, ['${filePath}.js']));
 }
@@ -569,6 +568,14 @@ void _delete(String path, [GrinderContext context]) {
   } else {
     deleteEntity(getDir(path), context);
   }
+}
+
+void _rename(String srcPath, String destPath, [GrinderContext context]) {
+   if (context != null) {
+     context.log('rename ${srcPath} to ${destPath}');
+   }
+   File srcFile = new File(srcPath);
+   srcFile.renameSync(destPath);
 }
 
 void _copyFileWithNewName(File srcFile, Directory destDir, String destFileName,

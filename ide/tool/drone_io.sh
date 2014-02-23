@@ -12,6 +12,9 @@ dart --version
 # Get our packages.
 pub get
 
+echo "FORCE_NIGHTLY ? :"
+
+echo $FORCE_NIGHTLY
 # Build the archive.
 if test x$DRONE_BRANCH = xmaster -o x$FORCE_NIGHTLY = xyes ; then
   ./grind release-nightly

@@ -17,7 +17,7 @@ export FAKE_DRONE_BRANCH=master
 
 echo $FORCE_NIGHTLY
 # Build the archive.
-if test x$FAKE_DRONE_BRANCH = xmaster -o x$FORCE_NIGHTLY = xyes ; then
+if [ "$FAKE_DRONE_BRANCH" = "master" -o "$FORCE_NIGHTLY" = "yes" ] ; then
   ./grind release-nightly
 else
   ./grind archive

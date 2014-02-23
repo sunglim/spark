@@ -692,13 +692,13 @@ class ProjectLocationManager {
 
     // Display a dialog asking the user to choose a default project folder.
     // TODO: We need to provide an explaination to the user about what this
-    // folder is for.
     return _selectFolder(suggestedName: 'projects').then((entry) {
+    // folder is for.
       if (entry == null) {
         return null;
       }
 
-      _projectLocation = entry;
+      _projectLocation = new LocationResult(entry, entry, false);
       _prefs.setValue('projectFolder', chrome.fileSystem.retainEntry(entry));
       return new LocationResult(entry, entry, false);
     });

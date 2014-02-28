@@ -1073,7 +1073,7 @@ class FileOpenInTabAction extends SparkAction implements ContextAction {
 }
 
 class FileOpenAction extends SparkAction {
-  FileOpenAction(Spark spark) : super(spark, "file-open", "Open File…") {
+  FileOpenAction(Spark spark) : super(spark, "file-open", "Open File...") {
     addBinding("ctrl-o");
   }
 
@@ -1087,7 +1087,7 @@ class FileNewAction extends SparkActionWithDialog implements ContextAction {
   ws.Folder folder;
 
   FileNewAction(Spark spark, Element dialog)
-      : super(spark, "file-new", "New File…", dialog) {
+      : super(spark, "file-new", "New File...", dialog) {
     addBinding("ctrl-n");
     _nameElement = _triggerOnReturn("#fileName");
   }
@@ -1175,7 +1175,7 @@ class FileRenameAction extends SparkActionWithDialog implements ContextAction {
   InputElement _nameElement;
 
   FileRenameAction(Spark spark, Element dialog)
-      : super(spark, "file-rename", "Rename…", dialog) {
+      : super(spark, "file-rename", "Rename...", dialog) {
     _nameElement = _triggerOnReturn("#renameFileName");
   }
 
@@ -1436,7 +1436,7 @@ class FolderNewAction extends SparkActionWithDialog implements ContextAction {
   ws.Folder folder;
 
   FolderNewAction(Spark spark, Element dialog)
-      : super(spark, "folder-new", "New Folder…", dialog) {
+      : super(spark, "folder-new", "New Folder...", dialog) {
     addBinding("ctrl-shift-n");
     _nameElement = _triggerOnReturn("#folderName");
   }
@@ -1496,7 +1496,7 @@ class NewProjectAction extends SparkActionWithDialog {
   ws.Folder folder;
 
   NewProjectAction(Spark spark, Element dialog)
-      : super(spark, "project-new", "New Project…", dialog) {
+      : super(spark, "project-new", "New Project...", dialog) {
     _nameElement = _triggerOnReturn("#name");
   }
 
@@ -1548,7 +1548,7 @@ class NewProjectAction extends SparkActionWithDialog {
 }
 
 class FolderOpenAction extends SparkAction {
-  FolderOpenAction(Spark spark) : super(spark, "folder-open", "Open Folder…");
+  FolderOpenAction(Spark spark) : super(spark, "folder-open", "Open Folder...");
 
   void _invoke([Object context]) {
     spark.openFolder();
@@ -1605,7 +1605,7 @@ class _HarnessPushJob extends Job {
   final String _url;
 
   _HarnessPushJob(this.spark, this.deployContainer, this._url) :
-    super('Deploying to mobile…');
+    super('Deploying to mobile...');
 
   Future run(ProgressMonitor monitor) {
     HarnessPush harnessPush = new HarnessPush(deployContainer);
@@ -1623,7 +1623,7 @@ class ProjectPropertiesAction extends SparkActionWithDialog implements ContextAc
   HtmlElement _propertiesElement;
 
   ProjectPropertiesAction(Spark spark, Element dialog)
-      : super(spark, 'project-properties', 'Properties…', dialog) {
+      : super(spark, 'project-properties', 'Properties...', dialog) {
     _propertiesElement = getElement('#projectPropertiesDialog .modal-body');
   }
 
@@ -1677,7 +1677,7 @@ class GitCloneAction extends SparkActionWithDialog {
   InputElement _repoUrlElement;
 
   GitCloneAction(Spark spark, Element dialog)
-      : super(spark, "git-clone", "Git Clone…", dialog) {
+      : super(spark, "git-clone", "Git Clone...", dialog) {
     _repoUrlElement = _triggerOnReturn("#gitRepoUrl");
   }
 
@@ -1708,7 +1708,7 @@ class GitBranchAction extends SparkActionWithDialog implements ContextAction {
   InputElement _branchNameElement;
 
   GitBranchAction(Spark spark, Element dialog)
-      : super(spark, "git-branch", "Create Branch…", dialog) {
+      : super(spark, "git-branch", "Create Branch...", dialog) {
     _branchNameElement = _triggerOnReturn("#gitBranchName");
   }
 
@@ -1740,7 +1740,7 @@ class GitCommitAction extends SparkActionWithDialog implements ContextAction {
   String _gitEmail;
 
   GitCommitAction(Spark spark, Element dialog)
-      : super(spark, "git-commit", "Commit Changes…", dialog) {
+      : super(spark, "git-commit", "Commit Changes...", dialog) {
     _commitMessageElement = getElement("#commitMessage");
     _userNameElement = getElement('#gitName');
     _userEmailElement = getElement('#gitEmail');
@@ -1799,7 +1799,7 @@ class GitCheckoutAction extends SparkActionWithDialog implements ContextAction {
   SelectElement _selectElement;
 
   GitCheckoutAction(Spark spark, Element dialog)
-      : super(spark, "git-checkout", "Switch Branch…", dialog) {
+      : super(spark, "git-checkout", "Switch Branch...", dialog) {
     _selectElement = getElement("#gitCheckout");
   }
 
@@ -1846,7 +1846,7 @@ class GitPushAction extends SparkActionWithDialog implements ContextAction {
   bool _needsUsernamePassword;
 
   GitPushAction(Spark spark, Element dialog)
-      : super(spark, "git-push", "Push to Origin…", dialog) {
+      : super(spark, "git-push", "Push to Origin...", dialog) {
     _commitsList = getElement('#gitCommitList');
   }
 
@@ -1948,7 +1948,7 @@ class GitResolveConflictsAction extends SparkAction implements ContextAction {
 
 class GitRevertChangesAction extends SparkAction implements ContextAction {
   GitRevertChangesAction(Spark spark) :
-      super(spark, "git-revert-changes", "Revert Changes…");
+      super(spark, "git-revert-changes", "Revert Changes...");
 
   void _invoke([List resources]) {
     ScmProjectOperations operations =
@@ -1995,7 +1995,7 @@ class _GitCloneJob extends Job {
   Spark spark;
 
   _GitCloneJob(this.url, String projectName, this.spark)
-      : super("Cloning ${projectName}…") {
+      : super("Cloning ${projectName}...") {
     _projectName = projectName;
   }
 
@@ -2037,7 +2037,7 @@ class _GitBranchJob extends Job {
   String url;
 
   _GitBranchJob(this.gitOperations, String branchName)
-      : super("Creating ${branchName}…") {
+      : super("Creating ${branchName}...") {
     _branchName = branchName;
   }
 
@@ -2063,7 +2063,7 @@ class _GitCommitJob extends Job {
   Spark spark;
 
   _GitCommitJob(this.gitOperations, this._userName, this._userEmail,
-      this._commitMessage, this.spark) : super("Committing…");
+      this._commitMessage, this.spark) : super("Committing...");
 
   Future run(ProgressMonitor monitor) {
     monitor.start(name, 1);
@@ -2083,7 +2083,7 @@ class _GitCheckoutJob extends Job {
   Spark spark;
 
   _GitCheckoutJob(this.gitOperations, String branchName, this.spark)
-      : super("Switching to ${branchName}…") {
+      : super("Switching to ${branchName}...") {
     _branchName = branchName;
   }
 
@@ -2103,7 +2103,7 @@ class _OpenFolderJob extends Job {
   chrome.DirectoryEntry _entry;
 
   _OpenFolderJob(chrome.DirectoryEntry entry, this.spark)
-      : super("Opening ${entry.fullPath}…") {
+      : super("Opening ${entry.fullPath}...") {
     _entry = entry;
   }
 
@@ -2133,7 +2133,7 @@ class _GitPushJob extends Job {
   String password;
 
   _GitPushJob(this.gitOperations, this.username, this.password, this.spark)
-      : super("Pushing changes…") {
+      : super("Pushing changes...") {
   }
 
   Future run(ProgressMonitor monitor) {
@@ -2150,7 +2150,7 @@ class _GitPushJob extends Job {
 class ResourceRefreshJob extends Job {
   final List<ws.Project> resources;
 
-  ResourceRefreshJob(this.resources) : super('Refreshing…');
+  ResourceRefreshJob(this.resources) : super('Refreshing...');
 
   Future run(ProgressMonitor monitor) {
     List<ws.Project> projects = resources.map((r) => r.project).toSet().toList();
@@ -2305,7 +2305,7 @@ class _WebStorePublishJob extends Job {
   Spark spark;
 
   _WebStorePublishJob(this.spark, this._container, this._appID)
-      : super("Publishing to Chrome Web Store…");
+      : super("Publishing to Chrome Web Store...");
 
   Future run(ProgressMonitor monitor) {
     monitor.start(name, _appID == null ? 5 : 6);

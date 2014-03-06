@@ -1778,15 +1778,22 @@ class GitCommitAction extends SparkActionWithDialog implements ContextAction {
   TextAreaElement _commitMessageElement;
   InputElement _userNameElement;
   InputElement _userEmailElement;
+  HtmlElement _gitStatusElement;
   bool _needsFillNameEmail;
   String _gitName;
   String _gitEmail;
+
+  int modifiedStatusCount;
+  int addedStatusCount;
+  int deletedStatusCount;
 
   GitCommitAction(Spark spark, Element dialog)
       : super(spark, "git-commit", "Commit Changes…", dialog) {
     _commitMessageElement = getElement("#commitMessage");
     _userNameElement = getElement('#gitName');
     _userEmailElement = getElement('#gitEmail');
+    // TODO: add gitStatus element on htmlfile
+    _gitStatusElement = getElement('#gitStatus');
   }
 
   void _invoke([context]) {
@@ -1807,7 +1814,20 @@ class GitCommitAction extends SparkActionWithDialog implements ContextAction {
       _commitMessageElement.value = '';
       _userNameElement.value = '';
       _userEmailElement.value = '';
-      _show();
+    });
+    _gitStatusElement.innerHtml = '';
+    modifiedStatusCount = 0;
+    deletedStatusCount = 0;
+    addedStatusCount = 0;
+    _getGitStatus().then((_) => _show());
+  }
+
+  Future _addGitStatus() {
+  }
+
+  // do
+  void _calculateScmStatus(ws.Folder folder) {
+    folder.getChildren().forEach((resource) {
     });
   }
 

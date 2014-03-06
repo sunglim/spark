@@ -1798,6 +1798,7 @@ class GitCommitAction extends SparkActionWithDialog implements ContextAction {
 
   void _invoke([context]) {
     project = context.first.project;
+    gitOperations = spark.scmManager.getScmOperationsFor(project);
     spark.syncPrefs.getValue("git-user-info").then((String value) {
       _gitName = null;
       _gitEmail = null;
@@ -1810,7 +1811,6 @@ class GitCommitAction extends SparkActionWithDialog implements ContextAction {
         _needsFillNameEmail = true;
       }
       getElement('#gitUserInfo').classes.toggle('hidden', !_needsFillNameEmail);
-      gitOperations = spark.scmManager.getScmOperationsFor(project);
       _commitMessageElement.value = '';
       _userNameElement.value = '';
       _userEmailElement.value = '';
@@ -1819,7 +1819,7 @@ class GitCommitAction extends SparkActionWithDialog implements ContextAction {
     modifiedStatusCount = 0;
     deletedStatusCount = 0;
     addedStatusCount = 0;
-    _getGitStatus().then((_) => _show());
+    _addGitStatus().then((_) => _show());
   }
 
   Future _addGitStatus() {
@@ -1828,6 +1828,16 @@ class GitCommitAction extends SparkActionWithDialog implements ContextAction {
   // do
   void _calculateScmStatus(ws.Folder folder) {
     folder.getChildren().forEach((resource) {
+      if (Resource is ws.Folder) {
+        _calculateScmStatus(resource);
+      } else if (resource is ws.File) {
+        FileStatus status = gitOperations.getFileStatus(resource);
+        if (status == FileStatus.MODIFIED) {
+          modifiedStatusCount += 1;
+        } else if (status == FileStatus.UNTRACKED) {
+          addedStatusCount += 1;
+        }
+      }
     });
   }
 

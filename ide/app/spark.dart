@@ -2636,5 +2636,7 @@ void _handleUncaughtException(error, [StackTrace stackTrace]) {
 bool get _isTrackingPermitted =>
     _analyticsTracker.service.getConfig().isTrackingPermitted();
 
+    
+    
 set _isTrackingPermitted(bool value) =>
     _analyticsTracker.service.getConfig().setTrackingPermitted(value);

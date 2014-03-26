@@ -139,6 +139,12 @@
   margin-bottom: 0px;
 }
 
+#gitChangeList {
+  max-height: 80px;
+  overflow: auto;
+  padding: 0 0px;
+}
+
 #gitUserInfo.hidden {
   display: none;
 }

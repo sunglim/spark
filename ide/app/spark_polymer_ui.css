@@ -140,9 +140,12 @@
 }
 
 #gitChangeList {
-  max-height: 80px;
+  border-radius: 4px;
+  border: 1px solid #e1e1e8;
+  margin: 5px 0px;
+  max-height: 100px;
   overflow: auto;
-  padding: 0 0px;
+  padding: 5px 14px;
 }
 
 #gitUserInfo.hidden {

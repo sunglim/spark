@@ -12,13 +12,6 @@ dart --version
 # Get our packages.
 pub get
 
-# Build the archive.
-if test x$DRONE_BRANCH = xmaster -o x$FORCE_NIGHTLY = xyes ; then
-  ./grind release-nightly
-else
-  ./grind archive
-fi
-
 ./grind mode-test
 
 # Run tests the Dart version of the app.

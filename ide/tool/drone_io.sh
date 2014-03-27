@@ -12,6 +12,7 @@ dart --version
 # Get our packages.
 pub get
 
+./grind setup
 ./grind mode-test
 
 # Run tests the Dart version of the app.

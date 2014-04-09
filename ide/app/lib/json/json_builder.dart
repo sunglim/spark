@@ -5,8 +5,9 @@
 library spark.json_builder;
 
 import 'dart:async';
+import 'dart:convert' as convert;
 
-import 'package:json/json.dart';
+import 'package:json/json.dart' as json;
 
 import '../builder.dart';
 import '../jobs.dart';
@@ -34,16 +35,52 @@ class JsonBuilder extends Builder {
       file.clearMarkers('json');
 
       try {
-        JsonParser parser = new JsonParser(str, new _JsonParserListener(file));
-        parser.parse();
+        new convert.JsonDecoder().convert(str);
       } catch (e) {
-        // Ignore e; already reported through the listener interface.
+        _ErrorMessageParser parser = new _ErrorMessageParser(str, e.message);
+        file.createMarker('json', Marker.SEVERITY_ERROR, parser.Message, parser.Line, parser.Position);
       }
     });
   }
+  
+  String _beautifyException(FormatException e) {
+    final String exceptionMessage = e.message;
+    Pattern pattern = new RegExp('[1-9]+:');
+    final message = exceptionMessage.substring(0, exceptionMessage.indexOf(pattern));
+    final position = exceptionMessage.substring(exceptionMessage.indexOf(pattern), exceptionMessage.indexOf(new RegExp(': ')));
+    var nike = message;
+    return message;
+    //"Unexpected character at 877: 'aa: [\n    "http://*/...'"
+  }
 }
 
-class _JsonParserListener extends JsonListener {
+class _ErrorMessageParser {
+  final String _errorMessage;
+  final String _source;
+  var Message;
+  var Position;
+  var Line;
+  static Pattern _pattern = new RegExp('[1-9]+:'); 
+  _ErrorMessageParser(this._source, this._errorMessage) {
+     Message = _errorMessage.substring(0, _errorMessage.indexOf(_pattern));
+     Position = int.parse(_errorMessage.substring(_errorMessage.indexOf(_pattern),
+                                       _errorMessage.indexOf(new RegExp(': '))));
+     Line = _calcLineNumber();
+  }
+  
+  int _calcLineNumber() {
+      int lineCount = 0;
+
+      for (int index = 0; index < _source.length; index++) {
+        if (_source[index] == '\n') lineCount++;
+        if (index == Position) return lineCount + 1;
+      }
+
+      return lineCount;
+    }
+}
+
+class _JsonParserListener extends json.JsonListener {
   final File file;
 
   _JsonParserListener(this.file);

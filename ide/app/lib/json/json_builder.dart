@@ -36,7 +36,8 @@ class JsonBuilder extends Builder {
         new convert.JsonDecoder().convert(str);
       } catch (e) {
         _ErrorMessageParser parser = new _ErrorMessageParser(str, e.message);
-        file.createMarker('json', Marker.SEVERITY_ERROR, parser.Message, parser.Line, parser.Position);
+        //file.createMarker('json', Marker.SEVERITY_ERROR, parser.message, parser.lineNumber, parser.position);
+        file.createMarker('json', Marker.SEVERITY_ERROR, parser.message, 1);
       }
     });
   }
@@ -48,32 +49,38 @@ class JsonBuilder extends Builder {
 class _ErrorMessageParser {
   final String _errorMessage;
   final String _source;
-  var Message;
-  var Position;
-  var Line;
-  static final _pattern = new RegExp('[1-9]+:');
+  var message;
+  var position;
+  var lineNumber;
+  static final _pattern = new RegExp(' \\d+:');
+  //static final _pattern = new RegExp('at [1-9]');
 
   _ErrorMessageParser(this._source, this._errorMessage) {
-     // The error message format should be
+     // The error message format would be
      // "Unexpected character at 877: 'aa: [\n    "http://*/...'"
-     Message = _errorMessage.substring(0, _errorMessage.indexOf(_pattern));
-     Position = int.parse(
-         _errorMessage.substring(_errorMessage.indexOf(_pattern),
-                                 _errorMessage.indexOf(new RegExp(': '))));
-     Line = _calcLineNumber();
+    int nike = _errorMessage.indexOf(_pattern);
+     message = _errorMessage.substring(0, _errorMessage.indexOf(_pattern));
+
+     _process();
   }
 
   /**
    * Count the newlines between 0 and position.
    */
-  int _calcLineNumber() {
-      int lineCount = 0;
-
-      for (int index = 0; index < _source.length; index++) {
-        if (_source[index] == '\n') lineCount++;
-        if (index == Position) return lineCount + 1;
+  void _process() {
+    int start = _errorMessage.indexOf(_pattern);
+    int end = _errorMessage.indexOf(new RegExp(': '));
+    var substring =_errorMessage.substring(start,end);
+    int positionFromSource = int.parse(substring);
+    int newLineIndex = 0;
+    lineNumber = 0;
+    for (int index = 0; index < positionFromSource; index++) {
+      if (_source[index] == '\n') {
+        lineNumber++;
+        newLineIndex = index;
       }
-
-      return lineCount;
     }
+
+    position = positionFromSource - newLineIndex;
+  }
 }

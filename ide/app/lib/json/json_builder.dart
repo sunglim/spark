@@ -5,7 +5,7 @@
 library spark.json_builder;
 
 import 'dart:async';
-import 'dart:convert' as convert;
+import 'dart:convert';
 
 import '../builder.dart';
 import '../jobs.dart';
@@ -33,11 +33,14 @@ class JsonBuilder extends Builder {
       file.clearMarkers('json');
 
       try {
-        new convert.JsonDecoder().convert(str);
+        new JsonDecoder().convert(str);
       } catch (e) {
         _ErrorMessageParser parser = new _ErrorMessageParser(str, e.message);
-        //file.createMarker('json', Marker.SEVERITY_ERROR, parser.message, parser.lineNumber, parser.position);
-        file.createMarker('json', Marker.SEVERITY_ERROR, parser.message, 1);
+        file.createMarker('json',
+                          Marker.SEVERITY_ERROR,
+                          parser.message,
+                          parser.lineNumber,
+                          parser.position);
       }
     });
   }
@@ -52,35 +55,30 @@ class _ErrorMessageParser {
   var message;
   var position;
   var lineNumber;
-  static final _pattern = new RegExp(' \\d+:');
-  //static final _pattern = new RegExp('at [1-9]');
 
   _ErrorMessageParser(this._source, this._errorMessage) {
      // The error message format would be
      // "Unexpected character at 877: 'aa: [\n    "http://*/...'"
-    int nike = _errorMessage.indexOf(_pattern);
-     message = _errorMessage.substring(0, _errorMessage.indexOf(_pattern));
+    message = _errorMessage.substring(
+        0, _errorMessage.indexOf(new RegExp(' at \\d+:')));
+    position = int.parse(
+        _errorMessage.substring(_errorMessage.indexOf(new RegExp('\\d+:')),
+                                _errorMessage.indexOf(new RegExp(': '))));
 
-     _process();
+    lineNumber = _calcLineNumber();
   }
 
   /**
-   * Count the newlines between 0 and position.
-   */
-  void _process() {
-    int start = _errorMessage.indexOf(_pattern);
-    int end = _errorMessage.indexOf(new RegExp(': '));
-    var substring =_errorMessage.substring(start,end);
-    int positionFromSource = int.parse(substring);
-    int newLineIndex = 0;
-    lineNumber = 0;
-    for (int index = 0; index < positionFromSource; index++) {
-      if (_source[index] == '\n') {
-        lineNumber++;
-        newLineIndex = index;
-      }
+    * Count the newlines between 0 and position.
+    */
+  int _calcLineNumber() {
+    int lineCount = 0;
+
+    for (int index = 0; index < _source.length; index++) {
+      if (_source[index] == '\n') lineCount++;
+      if (index == position) return lineCount + 1;
     }
 
-    position = positionFromSource - newLineIndex;
+    return lineCount;
   }
 }

@@ -625,6 +625,15 @@ button.ace_searchbtn[action="findAll"] {
   pointer-events: none;
 }
 
+#outline .cursorPosition {
+  bottom: 0;
+  color: #888;
+  position: absolute;
+  border-top: 1px solid #333; 
+  padding: 8px;
+  width: 90%;
+} 
+
 #outline ul {
   margin: 0;
   margin-left: 15px;
